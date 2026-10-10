@@ -1,4 +1,26 @@
+import secrets
 import string
+
+
+def parola_oner(uzunluk=16):
+    karakter_gruplari = [
+        string.ascii_uppercase,
+        string.ascii_lowercase,
+        string.digits,
+        string.punctuation,
+    ]
+
+    if uzunluk < len(karakter_gruplari):
+        raise ValueError("Parola uzunluğu en az 4 karakter olmalıdır.")
+
+    parola = [secrets.choice(grup) for grup in karakter_gruplari]
+    tum_karakterler = "".join(karakter_gruplari)
+    parola.extend(
+        secrets.choice(tum_karakterler)
+        for _ in range(uzunluk - len(parola))
+    )
+    secrets.SystemRandom().shuffle(parola)
+    return "".join(parola)
 
 
 def parola_kontrol_et(parola):
@@ -42,3 +64,4 @@ puan, durum = parola_kontrol_et(test_parolasi)
 
 print(f"Puan: {puan}/4")
 print(f"Parola Gücü: {durum}")
+print(f"Önerilen güçlü parola: {parola_oner()}")
